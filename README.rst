@@ -1,56 +1,143 @@
-# BOOST-MI
+BOOST-GP
+=========
+Bayesian mOdeling Of Spatial Transcriptomics via Gaussian Process
 
-BOOST-MI (BOOST-Ising) is a method to detect spatially variable (SV) genes in spatial transcriptomics (ST) datasets. It is a Bayesian modeling framework for the analysis of gene expression count data on a lattice defined by a number of array spots. For each gene, expression counts are clustered into high-expression and low-expression level groups, and spatial pattern is defined by the interaction between these two groups in a modified Ising model. 
+Introduction
+------------
+**BOOST-GP** is a Bayesian hierarchical model developed 
+to analyze spatial transcriptomics data. It models the gene 
+expression count value with zero-inflated negative binomial 
+distribution, and estimated the spatial covariance with Gaussian 
+process model. It can be applied to detect spatial variable (SV) 
+genes whose expression display spatial pattern.
 
-# How to use BOOST-Ising functions
+**BOOST-GP** was developed and tested under ``R 3.6.1``. 
+The following R packages are required to run the model
 
-We use `MouseOB dataset` (Spatial Transcriptomics assay of a slice of Mouse Olfactory Bulb) as an example. This dataset can be found in `data` file.
-
-The following R packages are required to run the model:
-
-- Rcpp
-- RcppArmadillo
-- RcppDist
-- mclust
-- edgeR
-- lattice
-
-Firstly, we need to load data and functions. For demonstration, we load the example data with only 10 genes from the mouse olfactory bulb ST data. 
-
-```r
-load("data/toy_example.Rdata")
-source("functions/Boost_Ising_function.R")
-```
-
-The dataset includes two objects: `count data` and `location data`. In count data, each column is the expression counts for a gene. Location table records the coordinates of spots have been sampled on the tissue slice.
-
-Before detecting SV genes, we need to filter the dataset by removing sample locations and genes with few expression points. 
-
-```r
-filter_result <- filter_count(count, loc, min_total = 10, min_percentage = 0)
-loc_f <- filter_result[[1]]
-count_f <- filter_result[[2]]
-```
-In the above function, `min_total` is the minimum total counts, and locations are selected if the total counts for all genes in this location is not less than it. `min_percentage` is the minimum percentage of non-zero counts for genes. If a gene has so many zero counts that the percentage of non-zero count is less than this threshold, this gene will be removed. 
-
-After filteration, we can run the main SV gene detection function `Boost_Ising`. 
-
-Notes: Matrix is the only format acceptable for the 'count' input in the BOOST-Ising function. Each column is the expression counts for a gene. Column names are gene names. 
-```r
-detect_result <- Boost_Ising (count_f,loc_f, norm_method = 'tss', clustermethod = 'MGC')
-```
-In this function, we need to determine which normalization method is used. If `norm_method = 1`, counts data are devided by the summation of total counts for each location, which is at default. There are also other six options for normalization methods: 'q75', 'rle', 'tmm', 'n-vst', 'a-vst' and 'log'. For details of normalization methods, see Table 1 in the supplementary notes for the paper. For clustering method, model-based clustering method is applied. We can choose K-means by setting ` clustermethod = 'Kmeans'`. 
-
-The output of this function is a dataframe and each row is the result for one gene. 
-
-![detect_result](detect_result.PNG)
-
-For each gene, 'theta_mean', 'theta_CI_low' and 'theta_CI_high' is the estimated posterior mean and lower and upper bounds of 95% confidence interval for interaction parameter <img src="https://render.githubusercontent.com/render/math?math=\theta"> in the modified Ising model. 'omega_mean', 'omega_CI_low' and 'omega_CI_high' is the estimated posterior mean and lower and upper bounds of 95% confidence interval for first-order intensity parameter <img src="https://render.githubusercontent.com/render/math?math=\omega"> in the modified Ising model. 'BF_neg' is the Bayes factor favoring <img src="https://render.githubusercontent.com/render/math?math=\theta < 0"> against <img src="https://render.githubusercontent.com/render/math?math=\theta \geq 0">, while 'BF_pos' is the Bayes factor favoring <img src="https://render.githubusercontent.com/render/math?math=\theta > 0"> against <img src="https://render.githubusercontent.com/render/math?math=\theta \leq 0">.
-
-To obtain detected SV genes, we can check the Bayes factor favoring <img src="https://render.githubusercontent.com/render/math?math=\theta < 0"> against <img src="https://render.githubusercontent.com/render/math?math=\theta \geq 0">. 
-
-```r
-SV_gene <- rownames(detect_result)[which(detect_result$BF_neg > 150)]
-```
+-  ``Rcpp``
+-  ``RcppArmadillo``
+-  ``RcppDist``
+-  ``MASS``
 
 
+Run BOOST-GP on demo data
+-------------------------
+The following section will guide to run a exemplary data using **BOOST-GP**.
+
+Load BOOST-GP
+*************
+.. code:: R
+
+   source("R/boost.gp.R")
+
+
+Load demo data
+**************
+**BOOST-GP** requires two inputs:
+
+1. a count matrix with each row representing one spatial location, 
+and each column representing one gene.
+
+2. a location matrix specifying the x and y coordinates of each 
+location.
+
+.. code:: R
+
+   load("data/demo.Rdata")
+   head(count_matrix)
+
++---------------+---------+-------+---------+---------+------+
+|               | ARL6IP4 | RPL35 | FAM173A | SNRNP70 | RALY |
++===============+=========+=======+=========+=========+======+
+| 17.907x4.967  | 0       | 1     | 0       | 0       | 0    |
++---------------+---------+-------+---------+---------+------+
+| 18.965x5.003  | 0       | 1     | 0       | 0       | 4    |
++---------------+---------+-------+---------+---------+------+
+| 18.954x5.995  | 0       | 1     | 0       | 0       | 0    |
++---------------+---------+-------+---------+---------+------+
+| 17.846x5.993  | 0       | 2     | 0       | 0       | 0    |
++---------------+---------+-------+---------+---------+------+
+| 20.016x6.019  | 0       | 3     | 0       | 0       | 0    |
++---------------+---------+-------+---------+---------+------+
+| 20.889x6.956  | 0       | 2     | 0       | 1       | 0    |
++---------------+---------+-------+---------+---------+------+
+
+.. code:: R
+
+   head(loc)
+
++---------------+--------+-------+
+|               |      x |     y |
++===============+========+=======+
+| 17.907x4.967  | 17.907 | 4.967 |
++---------------+--------+-------+
+| 18.965x5.003  | 18.965 | 5.003 |
++---------------+--------+-------+
+| 18.954x5.995  | 18.954 | 5.995 |
++---------------+--------+-------+
+| 17.846x5.993  | 17.846 | 5.993 |
++---------------+--------+-------+
+| 20.016x6.019  | 20.016 | 6.019 |
++---------------+--------+-------+
+| 20.889x6.956  | 20.889 | 6.956 |
++---------------+--------+-------+
+
+Run the model
+*************
+We run ``boost.gp`` with its defaulting setting on the above demo data.
+
+.. code:: R
+
+   res <- boost.gp(Y = count_matrix, loc = loc)
+
+   [1] "Chain 1"
+   0% has been done
+   10% has been done
+   20% has been done
+   30% has been done
+   40% has been done
+   50% has been done
+   60% has been done
+   70% has been done
+   80% has been done
+   90% has been done
+   [1] "runtime is 146.703s"
+
+Following is the output of ``boost.gp``. ``l`` is the estimated length scale 
+of Gaussian process kernel. ``BF`` is the Bayes factor. ``PPI`` is the posterior 
+probablity of inclusion. The larger ``BF`` and ``PPI`` are, the stronger the 
+confidence of the gene being spatial variable gene is. ``pval`` is the p 
+value. Small ``pval`` indicates strong confidence.
+
+.. code:: R
+
+   res
+
++-----------+---------+--------+---------+-----------+-------+
+|           | l       | BF     | PPI     | pval      | time  |
++===========+=========+========+=========+===========+=======+
+| ARL6IP4   | 0.0818  |  1.058 | 0.010   | 1.456e-01 | 29.34 |
++-----------+---------+--------+---------+-----------+-------+
+| RPL35     | 0.6068  | 17.711 | 0.904   | 2.652e-09 | 29.34 |
++-----------+---------+--------+---------+-----------+-------+
+| FAM173A   | 0.0989  |  0.459 | 0.008   | 3.376e-01 | 29.34 |
++-----------+---------+--------+---------+-----------+-------+
+| SNRNP70   | 0.0876  |  0.928 | 0.022   | 1.730e-01 | 29.34 |
++-----------+---------+--------+---------+-----------+-------+
+| RALY      | 0.0000  |  0.379 | 0.000   | 3.839e-01 | 29.34 |
++-----------+---------+--------+---------+-----------+-------+
+
+Visualize the significant gene
+******************************
+Based on the above result, RPL35 is a significant spatial variable 
+gene, we plot its log transformed expression value to have a visual 
+examination.
+
+.. code:: R
+
+   plot.expr(log(count_matrix[,"RPL35"] + 1), loc)
+
+
+.. image:: README/readme.png
+   :width: 200px
+   :height: 200px
