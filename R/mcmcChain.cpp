@@ -231,7 +231,6 @@ Rcpp::List mcmc(arma::mat Y, int K, NumericVector s, arma::mat P, double f, int 
       for (w = 0; w < W; w++){
         j = rand()%p;
         gamma_new = 1 - gamma(j);
-        // tun_mu = log(mean(u(_, j)));
         tun_mu = log(mean(Mu.col(j)));
         
         if (gamma_new == 0) { // Delete step
