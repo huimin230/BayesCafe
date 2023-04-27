@@ -110,6 +110,7 @@ sum(res$gamma$PPI >= 0.5)
 [1] 0.9
 
 head(res$gamma[res$gamma$PPI > 1 - threshod, ])
+      gene PPI
 7   gene 7   1
 17 gene 17   1
 20 gene 20   1
