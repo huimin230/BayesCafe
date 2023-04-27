@@ -135,5 +135,5 @@ head(res$cluster)
 
 plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "steelblue3"))
 ```
-<img src="cluster_2.png" alt="cluster" width="500" height="300">
+<img src="cluster.png" alt="cluster" width="500" height="300">
 
