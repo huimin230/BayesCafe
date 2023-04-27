@@ -92,12 +92,49 @@ Alternatively, we can determine the threshold that controls for multiplicity, wh
 specified value (e.g. 0.05). 
 
 ```r
+## Identified discriminating genes using c = 0.5
+head(res$gamma[res$gamma$PPI >= 0.5, ])
+      gene PPI
+7   gene 7   1
+17 gene 17   1
+20 gene 20   1
+36 gene 36   1
+40 gene 40   1
+46 gene 46   1
 
+sum(res$gamma$PPI >= 0.5)
+[1] 15
+
+## Identified discriminating genes to control BFDR < 0.05
+(threshod <- bfdr(PPI = res$gamma$PPI, alpha = 0.05))
+[1] 0.9
+
+head(res$gamma[res$gamma$PPI > 1 - threshod, ])
+7   gene 7   1
+17 gene 17   1
+20 gene 20   1
+36 gene 36   1
+40 gene 40   1
+46 gene 46   1
+
+sum(res$gamma$PPI > 1 - threshod)
+[1] 15
 ```
 
 
 ### Visualize the clustering results
+```r
+head(res$cluster)
+                   x      y cluster
+16.92x9.015   16.920  9.015       1
+16.945x11.075 16.945 11.075       1
+16.97x10.118  16.970 10.118       1
+16.939x12.132 16.939 12.132       1
+16.949x13.055 16.949 13.055       1
+16.942x15.088 16.942 15.088       1
 
+plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "steelblue3"))
+```
 <img src="cluster.png" alt="cluster" width="500" height="300">
 
 
