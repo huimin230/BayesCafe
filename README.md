@@ -31,13 +31,6 @@ source("R/BayesCafe.R")
 load("data/demo_Data.Rdata")
 ```
 
-**BayesCafe** includes two objects:
-
-1. `count data`: a count matrix with each row representing one spatial location, 
-and each column representing one gene.
-
-2. `location data`: a location matrix specifying the coordinates of each spatial location.
-
 ### Data preprocessing
 Before running the model, we need to perform data preprocessing and generate required inputs for running the model, the essential inputs are:
 
@@ -70,7 +63,7 @@ s <- result$s
 P <- result$P
 ```
 
-## Run the model
+### Run the model
 We run the model using function `bayes_cafe`, where `K` is the specified number of clusters.
 
 ```r
