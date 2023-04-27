@@ -86,5 +86,5 @@ res <- bayes_cafe(
 
 ### Visualize the clusters
 
-![cluster](cluster_2.png)
+<img src="cluster.png" alt="cluster" width="500" height="300">
 
