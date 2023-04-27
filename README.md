@@ -137,4 +137,3 @@ plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "s
 ```
 <img src="cluster.png" alt="cluster" width="500" height="300">
 
-
