@@ -50,7 +50,7 @@ and each column represents a gene.
 - size.factor: a character string specifying method to calculate sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. Default is `tss`.
 - platform: a character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`).
 - findHVG: a logical indicating whether to find the highly variable genes. Default is `FALSE`.
-- n.HVGs=2000: a number indicating number of highly variable genes to be detected. Default is 2000.
+- n.HVGs: a number indicating number of highly variable genes to be detected. Default is 2000.
 
 ```r
 result <- dataPreprocess(
@@ -79,12 +79,25 @@ res <- bayes_cafe(
   loc = loc, 
   K = 2, 
   s = s, 
-  P = P, 
-  iter = 2000, 
-  burn = 1000)
+  P = P)
 ```
 
-### Visualize the clusters
+### Identifying the discriminating genes
+The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
+To obtain discriminating genes, we can check their marginal posterior probabilities
+of inclusion (PPI). Then, the discriminating genes are identified
+if their PPI values exceed a given threshold $c$, $c$ = 0.5, which is commonly referred to as the median model.
+
+Alternatively, we can determine the threshold that controls for multiplicity, which ensures that the expected Bayesian false discovery rate (BFDR) is less than a
+specified value (e.g. 0.05). 
+
+```r
+
+```
+
+
+### Visualize the clustering results
 
 <img src="cluster.png" alt="cluster" width="500" height="300">
+
 
