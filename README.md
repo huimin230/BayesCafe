@@ -125,7 +125,7 @@ sum(res$gamma$PPI > 1 - threshod)
 ### Visualize the clustering results
 ```r
 head(res$cluster)
-                   x      y cluster
+                   x      y     cluster
 16.92 x 9.015   16.920  9.015       1
 16.945 x 11.075 16.945 11.075       1
 16.97 x 10.118  16.970 10.118       1
