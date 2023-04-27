@@ -546,8 +546,8 @@ Rcpp::List mcmc(arma::mat Y, int K, NumericVector s, arma::mat P, double f, int 
         gamma_ppi(j) = gamma_ppi(j) + gamma(j);
         for (i = 0; i < n; i++) {
           H_ppi(i, j) = H_ppi(i, j) + H(i, j);
-          
-        }R
+      
+        }
       }
     }
     
