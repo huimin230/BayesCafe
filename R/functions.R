@@ -302,9 +302,9 @@ switch_label <- function(u_store, z_store, gamma_store, K){
 
 
 ## Visualization of clusters ####################################################
-plot.cluster <- function(data, x, y, size = 4, group, colors){
+plot.cluster <- function(data, x, y, size = 4, cluster, label, colors, title = NULL, ncol = 1){
   library(ggplot2)
-  p = ggplot(data, aes(x = {{x}}, y = {{y}}, color = {{group}})) +
+  p = ggplot(data, aes(x = {{x}}, y = {{y}}, color = {{cluster}})) +
     xlab("") + ylab("") +
     geom_point(size=size) +
     coord_fixed(ratio = 1) + 
@@ -319,10 +319,14 @@ plot.cluster <- function(data, x, y, size = 4, group, colors){
           axis.title = element_blank(),
           axis.text = element_blank(),
           axis.ticks = element_blank(),
-          panel.background = element_blank()) +
+          panel.background = element_blank(),
+          panel.border = element_rect(colour = "grey89", fill=NA, size=0.5)) +
     theme(legend.key=element_blank()) +
+    # theme(plot.title = element_text(face="bold")) +
     scale_colour_manual(values = colors) +
-    labs(col="Cluster")
+    labs(col=label) +
+    ggtitle(title) +
+    guides(color=guide_legend(ncol=ncol))
   
   return(p)
 }
