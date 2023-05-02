@@ -105,7 +105,9 @@ ggplot(simu_data, aes(x=Iteration, y=ARI)) +
   theme(legend.key=element_rect(fill="white")) +
   theme_minimal() +
   theme(panel.grid = element_blank(), 
-        panel.border = element_rect(fill= "transparent")) 
+        panel.border = element_rect(fill= "transparent")) +
+  labs(caption = "(a)") +
+  theme(plot.caption = element_text(hjust=0.5))
 
 ## Trace plot of discriminating genes
 ggplot(simu_data, aes(x=Iteration, y=gamma_sum)) + 
@@ -115,7 +117,9 @@ ggplot(simu_data, aes(x=Iteration, y=gamma_sum)) +
   theme_minimal() +
   theme(panel.grid = element_blank(), 
         panel.border = element_rect(fill= "transparent")) +
-  geom_hline(yintercept = 15, colour = "red", linetype=3)
+  geom_hline(yintercept = 15, colour = "red", linetype=3) +
+  labs(caption = "(b)") +
+  theme(plot.caption = element_text(hjust=0.5))
 
 ## Plot of aggregated PPI
 ## Use BFDR to find threshold
@@ -133,7 +137,9 @@ ggplot(simu_data2, aes(x=index, y=gamma_ppi)) +
   xlab("Gene index") +
   ylab("Posterior probabilities of inclusion") +
   # theme_bw() +
-  geom_segment(aes(x=index,xend=index,y=0, yend=ppi)) 
+  geom_segment(aes(x=index,xend=index,y=0, yend=ppi)) +
+  labs(caption = "(c)") +
+  theme(plot.caption = element_text(hjust=0.5))
 
 
 ## Plot of cumulative prop. of variance explained with error bar (min and max)
@@ -151,7 +157,9 @@ ggplot(data_pve, aes(x=x, y=y, group=group, color=group)) +
   theme(legend.position=c(0.25, 0.9)) + 
   scale_color_manual(values=c("green", "#00AFBB", "#E7B800", "#FC4E07")) +
   # ylim(c(0, 0.6)) +
-  theme(legend.key.size = unit(0.5, "cm"))
+  theme(legend.key.size = unit(0.5, "cm")) +
+  labs(caption = "(d)") +
+  theme(plot.caption = element_text(hjust=0.5))
 
 
 ################################################################################
@@ -191,12 +199,13 @@ for (i in 1:length(methods)) {
 }
 
 ## Heatmap of discriminating genes
+table(mob_gene$group)
 library(ComplexHeatmap)
 lgd_list <- list(title = "Relative expression level",
                  title_position = "leftcenter-rot",
                  legend_height = unit(5, "cm"))
 Heatmap(t(mob_expression), 
-        row_split = factor(mob_gene$Group, levels = paste0("Group ", c(1,3,2))),
+        row_split = factor(mob_gene$group, levels = paste0("Group ", c(1,3,2))),
         
         cluster_rows = TRUE,
         cluster_row_slices = TRUE,
@@ -277,6 +286,19 @@ ggplot(mob_pve, aes(x=x, y=y, group=group, color=group)) +
   theme(legend.key.size = unit(0.5, "cm"))
 
 
+## Fold enrichment (odd ratio) when querying SV genes with known visual cortex genes
+ggplot(mob_fold, aes(x = Method, y = Fold_Enrichment)) +
+  geom_col(fill = "#0073C2FF") +
+  theme(legend.key=element_rect(fill="white")) +
+  theme_minimal() +
+  theme(panel.grid = element_blank(), 
+        panel.border = element_rect(fill= "transparent")) +  
+  xlab("") +
+  ylab("Fold enrichment (odd ratio)") +
+  geom_text(aes(label = label), vjust = -1) +
+  ylim(c(0,1.7))
+
+
 ################################################################################
 ##
 ## Part 3. Mouse visual cortext STARmap data
@@ -330,6 +352,7 @@ for (i in 1:length(methods)) {
 }
 
 ## Heatmap of discriminating genes
+table(starmap_gene$group)
 library(ComplexHeatmap)
 library(circlize)
 library('dendextend')
@@ -338,7 +361,7 @@ lgd_list <- list(title = "Relative expression level",
                  legend_height = unit(5, "cm"))
 starmap_expression <- as.matrix(starmap_expression)
 Heatmap(t(starmap_expression),
-        row_split = factor(starmap_gene$Group),
+        row_split = factor(starmap_gene$group),
         cluster_rows = TRUE,
         cluster_row_slices = TRUE,
         show_row_dend = TRUE,
@@ -415,3 +438,16 @@ ggplot(starmap_pve, aes(x=x, y=y, group=group, color=group)) +
   scale_color_manual(values=c("#00AFBB", "#E7B800", "#FC4E07")) +
   theme(legend.position=c(0.25, 0.9)) +
   theme(legend.key.size = unit(0.5, "cm"))
+
+## Fold enrichment (odd ratio) when querying SV genes with known visual cortex genes
+ggplot(starmap_fold, aes(x = Method, y = Fold_Enrichment)) +
+  geom_col(fill = "#0073C2FF") +
+  theme(legend.key=element_rect(fill="white")) +
+  theme_minimal() +
+  theme(panel.grid = element_blank(), 
+        panel.border = element_rect(fill= "transparent")) +  
+  xlab("") +
+  ylab("Fold enrichment (odd ratio)") +
+  geom_text(aes(label = label), vjust = -1) +
+  ylim(c(0, 10)) 
+
