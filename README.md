@@ -9,7 +9,7 @@ data via a zero-inflated negative binomial (ZINB) model, and utilizes a feature 
 approach that offers low-dimensional representations of the SRT data in terms of a list
 of discriminating genes. BayesCafe employs an Markov random field prior to integrate the geospatial profile of SRT data to improve clustering accuracy. 
 
-![workflow](workflow.png)
+![BayesCafe](BayesCafe.png)
 
 **BayesCafe** was developed and tested under `R 4.2.2`. The following R packages are required to run the model
 
