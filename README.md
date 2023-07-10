@@ -21,7 +21,7 @@ of discriminating genes. BayesCafe employs an Markov random field prior to integ
 - scuttle
 - scran
 
-## Run BOOST-GP on demo data
+## Run BayesCafe on demo data
 
 The following section will guide to run a exemplary data using **BayesCafe**.
 
