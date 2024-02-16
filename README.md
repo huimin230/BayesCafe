@@ -28,7 +28,7 @@ The following section will guide to run a exemplary data using **BayesCafe**.
 ### Load BayesCafe and demo data
 ```r
 source("R/BayesCafe.R")
-load("data/demo_Data.Rdata")
+load("data/demo.Rdata")
 ```
 
 ### Data preprocessing
