@@ -1,0 +1,13 @@
+data,method,Fold_Enrichment,FET_P
+mouse olfactory bulb,BayesCafe,1.545562415,0.00322
+mouse olfactory bulb,BayesCafe_NB,1.415564342,0.0337
+mouse olfactory bulb,SPARK,1.398453924,0.0737
+mouse olfactory bulb,SpatialDE,1.327487606,0.186
+mouse visual cortex,BayesCafe,9.182075312,1.62E-40
+mouse visual cortex,BayesCafe_NB,8.781952865,4.77E-36
+mouse visual cortex,SPARK,7.175863693,3.29E-19
+mouse visual cortex,SpatialDE,8.182075312,1.62E-28
+human breast cancer,BayesCafe,2.410717015,0.000387695
+human breast cancer,BayesCafe_NB,2.083469331,0.000840652
+human breast cancer,SPARK,1.337756248,0.0657
+human breast cancer,SpatialDE,1.383370125,0.0747
