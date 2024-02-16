@@ -11,7 +11,7 @@ of discriminating genes. BayesCafe employs an Markov random field prior to integ
 
 ![BayesCafe](BayesCafe.png)
 
-**BayesCafe** was developed and tested under `R 4.2.2`. The following R packages are required to run the model
+**BayesCafe** was developed and tested under `R 4.2.3`. The following R packages are required to run the model
 
 - Rcpp
 - RcppArmadillo
@@ -20,6 +20,8 @@ of discriminating genes. BayesCafe employs an Markov random field prior to integ
 - SingleCellExperiment
 - scuttle
 - scran
+- Seurat
+- edgeR
 
 ## Run BayesCafe on demo data
 
