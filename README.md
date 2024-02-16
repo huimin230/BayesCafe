@@ -63,7 +63,7 @@ P <- result$P
 ```
   
 ### Run the model
-We run the model using function `bayes_cafe`. The essential inputs include count, loc, and 
+We run the model using function `bayes_cafe`. The essential inputs include count, and 
 
 - K: Specified number of clusters.
 - s: Vector of sample-specific size factor.
@@ -74,10 +74,11 @@ We run the model using function `bayes_cafe`. The essential inputs include count
 ```r
 res <- bayes_cafe(
   count = count, 
-  loc = loc, 
   K = 2, 
   s = s, 
-  P = P)
+  P = P,
+  iter = 2000,
+  burn = 1000)
 ```
 
 ### Identify the discriminating genes
