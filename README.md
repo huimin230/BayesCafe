@@ -34,15 +34,15 @@ load("data/demo.Rdata")
 ### Data preprocessing
 Before running the model, we need to perform data preprocessing and generate required inputs for running the model, the essential inputs are:
 
-- count: A matrix of raw SRT count data, each row represents a spatial location and each column represents a gene.
-- loc: A matrix  with two columns representing the x and y coordinates of the spatial location.
-- cutoff_sample: A number indicating that spatial locations are kept with at least this number of total counts across all genes. Default is 100.
-- cutoff_feature: A number indicating that genes are kept with at least this percent of spatial locations with non-zero counts. Default is 0.1.
-- cutoff_max: A number indicating that genes are kept with at least this number of maximum counts across all spatial locations. Default is 0.
-- size.factor: A character string specifying method to calculate sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. Default is `tss`.
-- platform: A character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`).
-- findHVG: A logical indicating whether to find the highly variable genes. Default is `FALSE`.
-- n.HVGs: A number indicating number of highly variable genes to be detected. Default is 2000.
+- count: Matrix of raw SRT count data, each row represents a spatial location and each column represents a gene.
+- loc: Matrix  with two columns representing the x and y coordinates of the spatial location.
+- cutoff_sample: Number indicating that spatial locations are kept with at least this number of total counts across all genes. Default is 100.
+- cutoff_feature: Number indicating that genes are kept with at least this percent of spatial locations with non-zero counts. Default is 0.1.
+- cutoff_max: Number indicating that genes are kept with at least this number of maximum counts across all spatial locations. Default is 0.
+- size.factor: Character string specifying method to calculate sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. Default is `tss`.
+- platform: Character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`).
+- findHVG: Logical indicating whether to find the highly variable genes. Default is `FALSE`.
+- n.HVGs: Number indicating number of highly variable genes to be detected. Default is 2,000.
 
 ```r
 result <- dataPreprocess(
@@ -61,12 +61,16 @@ loc <- result$loc
 s <- result$s
 P <- result$P
 ```
-- s: A vector of sample-specific size factor.
-- P: A matrix of neighbor information, each row represents a spatial location and each column indicates the index of a neighboring spatial location.
   
 ### Run the model
-We run the model using function `bayes_cafe`, where `K` is the specified number of clusters.
+We run the model using function `bayes_cafe`. The essential inputs include count, loc, and 
 
+- K: Specified number of clusters.
+- s: Vector of sample-specific size factor.
+- P: Matrix of neighbor information, each row represents a spatial location and each column indicates the index of a neighboring spatial location.
+- iter: Number of total iterations. Default is 2,000.
+- burn: Number of burn-in iterations. Default is 1,000.
+  
 ```r
 res <- bayes_cafe(
   count = count, 
