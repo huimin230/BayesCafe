@@ -92,7 +92,7 @@ specified value (e.g. 0.05).
 
 ```r
 ## Identified discriminating genes using c = 0.5
-head(res$gamma[res$gamma$PPI >= 0.5, ])
+head(res$feature_result[res$feature_result$PPI >= 0.5, ])
       gene PPI
 7   gene 7   1
 17 gene 17   1
@@ -101,14 +101,14 @@ head(res$gamma[res$gamma$PPI >= 0.5, ])
 40 gene 40   1
 46 gene 46   1
 
-sum(res$gamma$PPI >= 0.5)
-[1] 15
+sum(res$feature_result$PPI >= 0.5)
+[1] 17
 
 ## Identified discriminating genes to control BFDR < 0.05
-(threshod <- bfdr(PPI = res$gamma$PPI, alpha = 0.05))
-[1] 0.9
+(threshod <- bfdr(PPI = res$feature_result$PPI, alpha = 0.05))
+[1] 0.6
 
-head(res$gamma[res$gamma$PPI > 1 - threshod, ])
+head(res$feature_result[res$feature_result$PPI > 1 - threshod, ])
       gene PPI
 7   gene 7   1
 17 gene 17   1
@@ -117,14 +117,14 @@ head(res$gamma[res$gamma$PPI > 1 - threshod, ])
 40 gene 40   1
 46 gene 46   1
 
-sum(res$gamma$PPI > 1 - threshod)
-[1] 15
+sum(res$feature_result$PPI > 1 - threshod)
+[1] 17
 ```
 
 
 ### Visualize the clustering results
 ```r
-head(res$cluster)
+head(res$cluster_result)
                    x      y     cluster
 16.92 x 9.015   16.920  9.015       1
 16.945 x 11.075 16.945 11.075       1
@@ -133,7 +133,7 @@ head(res$cluster)
 16.949 x 13.055 16.949 13.055       1
 16.942 x 15.088 16.942 15.088       1
 
-plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "steelblue3"))
+plot.cluster(res$cluster_result, x = x, y = y, cluster = as.factor(cluster), colors = c("red", "steelblue3"))
 ```
 <img src="cluster.png" alt="cluster" width="500" height="300">
 
