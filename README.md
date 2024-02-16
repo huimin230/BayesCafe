@@ -34,8 +34,7 @@ load("data/demo.Rdata")
 ### Data preprocessing
 Before running the model, we need to perform data preprocessing and generate required inputs for running the model, the essential inputs are:
 
-- count: a matrix of raw SRT count data, each row represents a spatial location 
-and each column represents a gene.
+- count: a matrix of raw SRT count data, each row represents a spatial location and each column represents a gene.
 - loc: a matrix  with two columns representing the x and y coordinates of the spatial location.
 - cutoff_sample: a number indicating that spatial locations are kept with at least this number of total counts across all genes. Default is 100.
 - cutoff_feature: a number indicating that genes are kept with at least this percent of spatial locations with non-zero counts. Default is 0.1.
@@ -62,7 +61,9 @@ loc <- result$loc
 s <- result$s
 P <- result$P
 ```
-
+- s: a vector of sample-specific size factor.
+- P: a matrix of neighbor information, each row represents a spatial location and each column indicates the index of a neighboring spatial location.
+  
 ### Run the model
 We run the model using function `bayes_cafe`, where `K` is the specified number of clusters.
 
