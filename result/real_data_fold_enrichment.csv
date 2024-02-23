@@ -1,6 +1,6 @@
 data,method,Fold_Enrichment,FET_P
 mouse olfactory bulb,BayesCafe,1.545562415,0.00322
-mouse olfactory bulb,BayesCafe_NB,1.415564342,0.0337
+mouse olfactory bulb,BayesCafe_NB,1.400196483,0.052
 mouse olfactory bulb,SPARK,1.398453924,0.0737
 mouse olfactory bulb,SpatialDE,1.327487606,0.186
 mouse visual cortex,BayesCafe,9.182075312,1.62E-40
